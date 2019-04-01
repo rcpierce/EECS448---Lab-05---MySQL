@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Delete Posts</title>
+    </head>
+    <body>
+        <?php
+
+            $myDB = new mysqli("mysql.eecs.ku.edu", "rcp07", "Fu4caayo", "rcp07");
+        
+            if ($myDB->connect_errno) {
+                printf("Connect failed: %s\n", $myDB->connect_error);
+                exit();
+            }
+        
+            echo "<h1>Select the posts that you would like to delete...</h1>";
+            $post_query = ($myDB->query("SELECT * FROM Posts"));
+            if ($post_query){
+                echo "<form method='POST' action='DeletePost.php'>";
+                echo "<table>";
+                echo "<tr><th>Post ID</th><th>Username</th><th>Post</th><th>Delete</th></tr>";
+
+                while ($tr = $post_query->fetch_assoc()) {
+                    $post_id = $tr["post_id"];
+                    $username = $tr["author_id"];
+                    $content = $tr["content"];
+
+                    echo "<tr><td>" . $post_id . "</td><td>" . $username . "</td><td>" . $content . "</td><td><input type='checkbox' name='checkbox[]'></td></tr>";
+                }
+                echo "</table>";
+                echo "<br>";
+                echo "<button type='submit'>Delete Selected Posts</button>";
+                echo "</form><br>";
+                
+            }
+            
+        ?>
+        <form>
+            <button type='submit' formaction='AdminHome.html'>Return to Admin Home</button>
+        </form>
+    </body>
+</html>
